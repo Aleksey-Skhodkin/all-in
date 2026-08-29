@@ -1,0 +1,70 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@example.com",
+      "password": "$2a$10$DXNiz/osA4id7snERqKVFuGeEDhKqwfj35xJZCOwJ5PIFeCXbJMvm",
+      "role": "admin",
+      "firstname": "Ada",
+      "lastname": "Admin"
+    },
+    {
+      "id": 2,
+      "email": "editor@example.com",
+      "password": "$2a$10$ws5shn8EzJCqlNafifNe/uEjNNbYqEWV59Ll0BPpzwEt5qWgM.AwO",
+      "role": "editor",
+      "firstname": "Eve",
+      "lastname": "Editor"
+    },
+    {
+      "id": 3,
+      "email": "user@example.com",
+      "password": "$2a$10$jrIj19sGqOBrKb1e8ee6BOmQ3JqaNz9LYRMCnE9Na5VkvQeDUp9ka",
+      "role": "user",
+      "firstname": "Ursula",
+      "lastname": "User"
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "userId": 1,
+      "title": "Admin post",
+      "body": "Only an admin can delete this one.",
+      "published": true
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "title": "Editor post",
+      "body": "Posted by the editor (owner).",
+      "published": false
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "userId": 1,
+      "name": "Auth-trainer",
+      "status": "active"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "name": "Permissions-lab",
+      "status": "planning"
+    }
+  ],
+  "messages": [
+    {
+      "id": 1,
+      "userId": 1,
+      "text": "Hello from the admin"
+    },
+    {
+      "id": 2,
+      "userId": 3,
+      "text": "Hello from the regular user"
+    }
+  ]
+}

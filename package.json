@@ -1,10 +1,13 @@
 {
   "name": "all-in-proj",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "node json-server/server.js",
+    "server:watch": "node --watch json-server/server.js",
+    "dev:all": "concurrently -n frontend,backend -c blue,green \"npm run server\" \"npm run dev\"",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview"
@@ -13,6 +16,7 @@
     "@tanstack/react-query": "^5.102.8",
     "@tanstack/react-query-devtools": "^5.102.8",
     "@tanstack/react-router-devtools": "^1.167.1",
+    "antd": "^6.6.2",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
@@ -22,6 +26,9 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.1.0",
+    "concurrently": "^10.0.5",
+    "json-server": "^0.17.4",
+    "json-server-auth": "^2.1.0",
     "oxlint": "^1.79.0",
     "typescript": "~6.0.2",
     "vite": "^8.2.2"
