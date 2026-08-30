@@ -2,7 +2,7 @@
 
 ## Commands
 - `npm run dev` — Vite dev server (frontend only)
-- `npm run server` / `npm run server:watch` — mock backend on http://localhost:8000
+- `npm run server` / `npm run server:watch` — mock backend on http://localhost:3000
 - `npm run dev:all` — frontend + backend concurrently
 - `npm run build` — `tsc -b && vite build` (build is also the typecheck)
 - `npm run lint` — oxlint
@@ -29,11 +29,14 @@ No test framework is installed. Verify changes with `npm run lint` then `npm run
 - Route files in `src/routes/` are **thin wrappers**: they only declare the `Route` (`createFileRoute` / `createRootRouteWithContext`) and pull components from `@/app` or `@/pages`. Business logic stays in `pages/` slices.
 
 ## Backend (json-server + json-server-auth)
-- Single `json-server/server.js`, data in `json-server/db.json`, port 8000.
+- Single `json-server/server.js`, data in `json-server/db.json`, port 3000.
 - Middleware order matters: rules → auth → defaults → role check → router.
 - JWT secret is hardcoded `json-server-auth-123456` (json-server-auth v2 internal).
 - Permissions use 3-digit `{owner}{logged-in}{public}` codes: users=600, posts=664, projects=660, messages=640.
-- Seed users (password `password123`): admin@example.com, editor@example.com, user@example.com.
+- Seed users (все пароли — `password123`):
+  - `admin@example.com`  (role: admin)
+  - `editor@example.com` (role: editor)
+  - `user@example.com`   (role: user)
 
 ## TS / lint conventions
 - `verbatimModuleSyntax`: use `import type` for type-only imports.

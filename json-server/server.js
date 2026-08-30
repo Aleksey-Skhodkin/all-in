@@ -9,6 +9,8 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET = "json-server-auth-123456";
 
 const server = jsonServer.create();
+// Resolve the DB relative to this file (cwd-independent): the seed data lives
+// at json-server/db.json, and a stray ./db.json at the repo root shadowed it.
 const router = jsonServer.router(fileURLToPath(new URL("./db.json", import.meta.url)));
 
 // json-server-auth needs the router's db bound to the app.
@@ -58,7 +60,7 @@ server.use((req, res, next) => {
 // CORS must be mounted BEFORE the auth middleware: json-server-auth answers
 // /login and /register directly, so the headers from jsonServer.defaults()
 // (which sits after auth) never reach those responses.
-// server.use(cors());
+server.use(cors());
 server.use(rules);
 server.use(auth);
 server.use(jsonServer.defaults());
@@ -87,8 +89,8 @@ server.use((req, res, next) => {
 
 server.use(router);
 
-server.listen(8000, () => {
-  console.log("JSON Server (auth) running → http://localhost:8000");
+server.listen(3000, () => {
+  console.log("JSON Server (auth) running → http://localhost:3000");
   console.log("  POST /register    register a new user (email + password)");
   console.log("  POST /login       log in → returns an accessToken (JWT)");
   console.log("  GET  /posts       public read, write needs a token");
