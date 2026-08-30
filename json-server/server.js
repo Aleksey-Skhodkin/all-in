@@ -1,5 +1,7 @@
 import jsonServer from "json-server";
 import auth from "json-server-auth";
+import cors from "cors";
+import { fileURLToPath } from "node:url";
 import jwt from "jsonwebtoken";
 
 // json-server-auth v2 hardcodes this secret internally (see its constants.js),
@@ -7,7 +9,7 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET = "json-server-auth-123456";
 
 const server = jsonServer.create();
-const router = jsonServer.router("db.json");
+const router = jsonServer.router(fileURLToPath(new URL("./db.json", import.meta.url)));
 
 // json-server-auth needs the router's db bound to the app.
 server.db = router.db;
@@ -53,6 +55,10 @@ server.use((req, res, next) => {
 //   1. rules      -> rewrites guarded routes
 //   2. auth       -> handle /register, /login and enforce the /6xx guards
 //   3. router     -> serve the collections
+// CORS must be mounted BEFORE the auth middleware: json-server-auth answers
+// /login and /register directly, so the headers from jsonServer.defaults()
+// (which sits after auth) never reach those responses.
+// server.use(cors());
 server.use(rules);
 server.use(auth);
 server.use(jsonServer.defaults());
