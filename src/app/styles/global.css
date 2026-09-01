@@ -52,3 +52,7 @@ body {
     Roboto,
     sans-serif;
 }
+
+#root {
+  min-height: 100svh;
+}

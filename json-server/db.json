@@ -23,6 +23,13 @@
       "role": "user",
       "firstname": "Ursula",
       "lastname": "User"
+    },
+    {
+      "email": "alex.cob.fan@gmail.com",
+      "password": "$2a$10$K7DCI/hlR7G5olirivXCkusmavq4vv60/IBfTugrowXB4UmE1EYVe",
+      "firstname": "Aleksey",
+      "lastname": "Skhodkin",
+      "id": 4
     }
   ],
   "posts": [
