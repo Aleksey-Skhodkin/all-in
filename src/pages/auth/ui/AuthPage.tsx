@@ -1,11 +1,13 @@
 import { useAuthContext } from "@app/providers/auth-provider/AuthProvider";
 import type { LoginCredentials } from "@shared/api/auth-api";
+import { useNavigate } from "@tanstack/react-router";
 import { Typography, Form, Divider, Input, Button } from "antd";
 
 const { Title } = Typography;
 
 export const AuthPage = () => {
   const { login } = useAuthContext();
+  const navigate = useNavigate();
   const [form] = Form.useForm();
 
   const initialValues: LoginCredentials = {
@@ -35,6 +37,9 @@ export const AuthPage = () => {
           <Input.Password />
         </Form.Item>
         <Button onClick={form.submit}>Sign in</Button>
+        <Button type="link" onClick={() => navigate({ to: "/register" })}>
+          Do not have registration?
+        </Button>
       </Form>
     </div>
   );

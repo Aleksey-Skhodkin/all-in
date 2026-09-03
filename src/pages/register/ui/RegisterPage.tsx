@@ -1,11 +1,13 @@
 import { useAuthContext } from "@app/providers/auth-provider/AuthProvider";
 import type { RegisterCredentials } from "@shared/api/auth-api";
+import { useNavigate } from "@tanstack/react-router";
 import { Typography, Form, Divider, Input, Button, InputNumber } from "antd";
 
 const { Title } = Typography;
 
 export const RegisterPage = () => {
   const { register } = useAuthContext();
+  const navigate = useNavigate();
   const [form] = Form.useForm();
 
   const initialValues: RegisterCredentials = {
@@ -48,6 +50,9 @@ export const RegisterPage = () => {
           <InputNumber />
         </Form.Item>
         <Button onClick={form.submit}>Register</Button>
+        <Button type="link" onClick={() => navigate({ to: "/auth" })}>
+          Already register?
+        </Button>
       </Form>
     </div>
   );

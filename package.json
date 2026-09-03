@@ -15,6 +15,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.102.8",
     "@tanstack/react-query-devtools": "^5.102.8",
+    "@tanstack/react-router": "^1.170.32",
     "@tanstack/react-router-devtools": "^1.167.1",
     "antd": "^6.6.2",
     "axios": "^1.20.0",
@@ -27,6 +28,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.1.0",
+    "bcryptjs": "^2.4.3",
     "concurrently": "^10.0.5",
     "json-server": "^0.17.4",
     "json-server-auth": "^2.1.0",

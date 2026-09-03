@@ -30,7 +30,8 @@ No test framework is installed. Verify changes with `npm run lint` then `npm run
 
 ## Backend (json-server + json-server-auth)
 - Single `json-server/server.js`, data in `json-server/db.json`, port 3000.
-- Middleware order matters: rules → auth → defaults → role check → router.
+- Middleware order matters: custom `/login` `/register` → rules → auth → defaults → role check → router.
+- `POST /login` and `POST /register` are **custom routes in `server.js`** (json-server-auth hardcodes JWT expiry to `1h` with no config option). Access tokens expire in `JWT_EXPIRES_IN` (`"1m"`). The custom routes need `jsonServer.bodyParser` mounted before them since jsa's own body parser doesn't run.
 - JWT secret is hardcoded `json-server-auth-123456` (json-server-auth v2 internal).
 - Permissions use 3-digit `{owner}{logged-in}{public}` codes: users=600, posts=664, projects=660, messages=640.
 - Seed users (все пароли — `password123`):
