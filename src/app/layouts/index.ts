@@ -1,3 +1,2 @@
 export { AppLayout } from "./AppLayout";
-export { AuthenticatedLayout } from "./AuthenticatedLayout";
-
+export { LoginLayout } from "./LoginLayout";

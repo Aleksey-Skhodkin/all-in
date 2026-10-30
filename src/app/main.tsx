@@ -6,7 +6,12 @@ import "./styles/global.css";
 import { ConfigProvider } from "antd";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./store/query-client";
-import { AuthProvider } from "./providers/auth-provider/AuthProvider";
+import { AuthProvider, useAuth } from "./providers/auth-provider/AuthProvider";
+
+function InnerApp() {
+  const auth = useAuth();
+  return <RouterProvider router={router} context={{ auth, queryClient }} />;
+}
 
 const rootElement = document.getElementById("root")!;
 if (!rootElement.innerHTML) {
@@ -23,11 +28,10 @@ if (!rootElement.innerHTML) {
       >
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
-            <RouterProvider router={router} />
+            <InnerApp />
           </AuthProvider>
         </QueryClientProvider>
       </ConfigProvider>
     </StrictMode>,
   );
 }
-

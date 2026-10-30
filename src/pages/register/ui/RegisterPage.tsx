@@ -1,14 +1,25 @@
-import { useAuthContext } from "@app/providers/auth-provider/AuthProvider";
-import type { RegisterCredentials } from "@shared/api/auth-api";
+import { authApi, type RegisterCredentials } from "@shared/api/auth-api";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Typography, Form, Divider, Input, Button, InputNumber } from "antd";
 
 const { Title } = Typography;
 
 export const RegisterPage = () => {
-  const { register } = useAuthContext();
   const navigate = useNavigate();
   const [form] = Form.useForm();
+
+  const registerMutation = useMutation({
+    mutationFn: authApi.register,
+    onSuccess: ({ data }) => {
+      navigate({ to: "/sign-in" });
+    },
+  });
+
+  // const register = async (credentials: RegisterCredentials) => {
+  //   await registerMutation.mutateAsync(credentials);
+  // };
+  //
 
   const initialValues: RegisterCredentials = {
     email: "",
@@ -16,7 +27,7 @@ export const RegisterPage = () => {
   };
 
   const onFormSubmit = (values: RegisterCredentials) => {
-    register(values);
+    // register(values);
   };
 
   return (
@@ -50,7 +61,7 @@ export const RegisterPage = () => {
           <InputNumber />
         </Form.Item>
         <Button onClick={form.submit}>Register</Button>
-        <Button type="link" onClick={() => navigate({ to: "/auth" })}>
+        <Button type="link" onClick={() => navigate({ to: "/sign-in" })}>
           Already register?
         </Button>
       </Form>

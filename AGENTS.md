@@ -28,12 +28,17 @@ No test framework is installed. Verify changes with `npm run lint` then `npm run
 - `src/app/router.tsx` creates the router with the QueryClient in context; `src/app/store/query-client.ts` holds the single `QueryClient` instance used by both router and providers.
 - Route files in `src/routes/` are **thin wrappers**: they only declare the `Route` (`createFileRoute` / `createRootRouteWithContext`) and pull components from `@/app` or `@/pages`. Business logic stays in `pages/` slices.
 
-## Backend (json-server + json-server-auth)
+## Backend (json-server, no json-server-auth)
 - Single `json-server/server.js`, data in `json-server/db.json`, port 3000.
-- Middleware order matters: custom `/login` `/register` → rules → auth → defaults → role check → router.
-- `POST /login` and `POST /register` are **custom routes in `server.js`** (json-server-auth hardcodes JWT expiry to `1h` with no config option). Access tokens expire in `JWT_EXPIRES_IN` (`"1m"`). The custom routes need `jsonServer.bodyParser` mounted before them since jsa's own body parser doesn't run.
-- JWT secret is hardcoded `json-server-auth-123456` (json-server-auth v2 internal).
-- Permissions use 3-digit `{owner}{logged-in}{public}` codes: users=600, posts=664, projects=660, messages=640.
+- Auth is **self-implemented** (json-server-auth was removed): CORS + cookie-parser → Bearer-user decoder → global bodyParser → permission middleware → auth endpoints → defaults → role check → router.
+- Token flow — **access token in memory (client) + refresh token in an httpOnly cookie**:
+  - `accessToken`: JWT, `ACCESS_TOKEN_TTL` (`"15m"`), returned in the response body of `/login` and `/refresh`.
+  - `refreshToken`: JWT (`jti`), `REFRESH_TOKEN_TTL` (`"7d"`), sent as an httpOnly `SameSite=Lax` cookie. Rotated on every `/refresh` (old `jti` revoked, new cookie set).
+- Endpoints: `POST /login`, `POST /register` (both set the refresh cookie, return `{ accessToken, user }`), `POST /refresh` (→ `{ accessToken }`), `POST /logout` (revokes the `jti`, clears the cookie). Legacy `json-server-auth`'s `GET /me` is gone.
+- Refresh tokens live in the `refreshTokens` collection in `db.json` (`{ id: jti, userId, expiresAt }`) and are blocked from the REST router.
+- JWT secret: `process.env.JWT_SECRET ?? "dev-secret"`.
+- CORS is `cors({ origin: "http://localhost:5173", credentials: true })`; `jsonServer.defaults({ noCors: true })` so its own cors doesn't overwrite the headers. Client must send requests with credentials.
+- Permission middleware replicates jsa's 3-digit `{owner}{logged-in}{public}` codes: users=600, posts=664, projects=660, messages=640. Ownership is matched via `userId` (or `id` for users); POST requires the body's `userId` to equal the authenticated user.
 - Seed users (все пароли — `password123`):
   - `admin@example.com`  (role: admin)
   - `editor@example.com` (role: editor)

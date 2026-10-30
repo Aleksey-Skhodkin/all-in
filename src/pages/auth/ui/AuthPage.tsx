@@ -1,4 +1,4 @@
-import { useAuthContext } from "@app/providers/auth-provider/AuthProvider";
+import { useAuth } from "@app/providers/auth-provider/AuthProvider";
 import type { LoginCredentials } from "@shared/api/auth-api";
 import { useNavigate } from "@tanstack/react-router";
 import { Typography, Form, Divider, Input, Button } from "antd";
@@ -6,17 +6,18 @@ import { Typography, Form, Divider, Input, Button } from "antd";
 const { Title } = Typography;
 
 export const AuthPage = () => {
-  const { login } = useAuthContext();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
   const initialValues: LoginCredentials = {
-    email: "",
-    password: "",
+    email: "admin@example.com",
+    password: "password123",
   };
 
-  const onFormSubmit = (values: LoginCredentials) => {
-    login(values);
+  const onFormSubmit = async (values: LoginCredentials) => {
+    await login(values);
+    navigate({ to: "/" });
   };
 
   return (

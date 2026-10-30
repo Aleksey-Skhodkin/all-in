@@ -13,14 +13,29 @@ export interface RegisterCredentials {
   age?: number;
 }
 
+export type Role = "admin" | "editor" | "user";
+
+export interface User {
+  id: string | number;
+  email: string;
+  role: Role;
+  firstname: string;
+  lastname: string;
+}
+
+export interface Session {
+  accessToken: string;
+  user: User;
+}
+
 export const authApi = {
   baseKey: "auth",
 
   login: (data: LoginCredentials) => {
-    return jsonApiInstance.post("/login", data);
+    return jsonApiInstance.post<Session>("/login", data);
   },
 
   register: (data: RegisterCredentials) => {
-    return jsonApiInstance.post("/register", data);
+    return jsonApiInstance.post<Session>("/register", data);
   },
 };

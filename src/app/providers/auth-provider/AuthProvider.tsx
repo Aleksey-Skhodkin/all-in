@@ -1,33 +1,25 @@
-import { authApi, type LoginCredentials, type RegisterCredentials } from "@shared/api/auth-api";
+import { setAccessToken } from "@shared/api/access-token";
+import { authApi, type LoginCredentials, type User } from "@shared/api/auth-api";
+import { useAccessToken } from "@shared/api/use-access-token";
 import { useMutation } from "@tanstack/react-query";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 
 interface Props {
   children: React.ReactNode;
 }
 
-export type Role = "admin" | "editor" | "user";
-export interface User {
-  id: string | number;
-  email: string;
-  password: string;
-  role: Role;
-  firstname: string;
-  lastname: string;
-}
+type AuthStatus = "unknown" | "authenticated" | "anonymous";
 
-interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  error: string | null;
-  isAuthenticated: boolean;
+export interface AuthContextType {
   login: (credentials: LoginCredentials) => Promise<void>;
+  status: AuthStatus;
+  user: User | null;
   logout: () => Promise<void>;
-  register: (data: RegisterCredentials) => Promise<void>;
+  ensureSession: () => Promise<AuthStatus>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-export const useAuthContext = () => {
+export const useAuth = () => {
   const ctx = useContext(AuthContext);
   if (ctx === undefined) {
     throw new Error("Context must be used within provider");
@@ -36,20 +28,52 @@ export const useAuthContext = () => {
 };
 
 export const AuthProvider = ({ children }: Props) => {
-  const loginMutations = useMutation({
-    mutationFn: authApi.login,
+  const token = useAccessToken();
+  const [session, setSession] = useState<{
+    status: AuthStatus;
+    user: User | null;
+  }>({
+    status: "unknown",
+    user: null,
   });
-  const registerMutations = useMutation({
-    mutationFn: authApi.register,
+  console.log(session);
+
+  const setAuthenticated = (user: User) => setSession({ status: "authenticated", user });
+  const setAnonymous = () => setSession({ status: "anonymous", user: null });
+  const ensureSession = async (): Promise<AuthStatus> => {
+    await new Promise((r) => setTimeout(r, 800));
+    setAnonymous();
+    return "anonymous";
+  };
+
+  const loginMutation = useMutation({
+    mutationFn: authApi.login,
+    onSuccess: ({ data }) => {
+      setAccessToken(data.accessToken);
+      setAuthenticated(data.user);
+    },
   });
 
   const login = async (credentials: LoginCredentials) => {
-    await loginMutations.mutateAsync(credentials);
+    await loginMutation.mutateAsync(credentials);
   };
 
-  const register = async (credentials: RegisterCredentials) => {
-    await registerMutations.mutateAsync(credentials);
+  const logout = async () => {
+    setAccessToken(null);
+    setAnonymous();
   };
 
-  return <AuthContext.Provider value={{ login, register }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider
+      value={{
+        login,
+        logout,
+        ensureSession,
+        status: session.status,
+        user: session.user,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };

@@ -7,11 +7,29 @@
       "skillPath": "feature-sliced-design/SKILL.md",
       "computedHash": "775a8ee42f32b12d33478eaf2416c0c1c394fac61b98805c6cf0f228cc2c9b34"
     },
+    "redux-toolkit": {
+      "source": "mindrally/skills",
+      "sourceType": "github",
+      "skillPath": "redux-toolkit/SKILL.md",
+      "computedHash": "7058695e76e6499ef9fb968a16c905bcc3e8399e50bb1826599492d240cd84e9"
+    },
     "tanstack-query-best-practices": {
       "source": "deckardger/tanstack-agent-skills",
       "sourceType": "github",
       "skillPath": "skills/tanstack-query/SKILL.md",
       "computedHash": "21d2e8b7468a81d772b6527ad8ca178cc2f3f08af777bb9061333013ee88a0c9"
+    },
+    "tanstack-router": {
+      "source": "tanstack-skills/tanstack-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/tanstack-router/skills/tanstack-router/SKILL.md",
+      "computedHash": "24beccc4016f91bab65547209cfd849ea5e66f3d5d92820683a9dd84669ced56"
+    },
+    "vercel-microfrontends": {
+      "source": "vercel/microfrontends",
+      "sourceType": "github",
+      "skillPath": "skills/vercel-microfrontends/SKILL.md",
+      "computedHash": "7a230ef727f3462b2058caa532c0e1758229226ac06b24100093c063e4e079b9"
     },
     "vercel-react-best-practices": {
       "source": "vercel-labs/agent-skills",

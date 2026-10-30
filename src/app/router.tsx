@@ -6,9 +6,12 @@ export const router = createRouter({
   routeTree,
   defaultPreload: "intent",
   defaultPreloadStaleTime: 0,
+  defaultPendingMs: 0,
+  defaultPendingComponent: () => <h1>Loading...</h1>,
   scrollRestoration: true,
   context: {
     queryClient,
+    auth: undefined!,
   },
 });
 
